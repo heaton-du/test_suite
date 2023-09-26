@@ -3,3 +3,5 @@
 *.imx
 *.elf
 *.map
+*.dis
+*.o
