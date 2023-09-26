@@ -1,9 +1,12 @@
 	
 .text
 .global  _start
+.global  reset_hdlr
+
+reset_hdlr:
+	b _start
 
 _start: 
-	b .
 	/* 设置栈 */
 	ldr  sp,=0x408000
 
