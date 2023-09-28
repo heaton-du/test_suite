@@ -4,7 +4,7 @@
 .global  reset_hdlr
 
 reset_hdlr:
-	ldr pc,=_start
+	ldr pc,=_start   //绝对调转
 
 _start: 
 	/* 设置栈 */

@@ -4,7 +4,7 @@
 .global  reset_hdlr
 
 reset_hdlr:
-	b _start
+	b _start   //相对跳转
 
 _start: 
 	/* 设置栈 */
