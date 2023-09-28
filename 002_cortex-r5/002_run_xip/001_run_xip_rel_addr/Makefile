@@ -15,7 +15,7 @@ test_suite.img : start.S  uart.c main.c my_printf.c
 	
 	$(OBJCOPY) -O binary -S test_suite.elf  test_suite.bin
 	$(OBJDUMP) -D -m arm  test_suite.elf  > test_suite.dis
-	../tools/sign/atb_signer_e3 sign --v 2 --sec_ver 0x1234 --dgst sha256 --iib core=0 type=0x0 image=test_suite.bin to=0x100C1000 entry=0x100C1000 --of test_suite.sign.bin
+	../../tools/sign/atb_signer_e3 sign --v 2 --sec_ver 0x1234 --dgst sha256 --iib core=0 type=0x0 image=test_suite.bin to=0x100C1000 entry=0x100C1000 --of test_suite.sign.bin
 
 clean:
 	rm -f test_suite.dis test_suite.bin test_suite.elf test_suite.imx test_suite.img *.o *.bin
