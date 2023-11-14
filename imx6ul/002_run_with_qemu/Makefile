@@ -10,8 +10,9 @@ relocate.img : start.S  uart.c main.c my_printf.c
 	$(CC) -nostdlib -g -c -o uart.o uart.c	
 	$(CC) -nostdlib -g -c -o main.o main.c	
 	$(CC) -nostdlib -g -c -o my_printf.o my_printf.c
+	$(CC) -nostdlib -g -c -march=armv7-a -o cp15.o cp15.c
 	
-	$(LD) -T imx6ull.lds -g start.o uart.o main.o my_printf.o -o relocate.elf -lgcc -L/usr/local/arm/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1
+	$(LD) -T imx6ull.lds -g start.o uart.o main.o my_printf.o cp15.o -o relocate.elf -lgcc -L/usr/local/arm/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1
 	
 	$(OBJCOPY) -O binary -S relocate.elf  relocate.bin
 	$(OBJDUMP) -D -m arm  relocate.elf  > relocate.dis
