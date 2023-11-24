@@ -1,13 +1,14 @@
 
 #include "uart.h"
 #include "my_printf.h"
+#include "cache.h"
 
 char g_charA = 'A';			//存储在 .data段
 const char g_charB = 'B';	//存储在 .rodata段
 const char g_charC;			//存储在 .bss段
 int g_intA = 0;				//存储在 .bss段
 int g_intB;					//存储在 .bss段
-		  			 		  						  					  				 	   		  	  	 	  
+
 /**********************************************************************
  * 函数名称： delay
  * 功能描述： 延时
@@ -35,17 +36,22 @@ void delay (volatile int time)
  ***********************************************************************/
 
 int main (void)
-{	
+{
 	Uart_Init();	//初始化uart串口
 
 	printf("\n\r");
 	/* 在串口上输出g_charA */
-	while (1)
+	unsigned int a = 100;
+	while (a--)
 	{
 		PutChar(g_charA);
 		g_charA++;
 		delay(1000000);
 	}
+
+	cache_enable();
+
+	while(1);
 
 	return 0;
 }

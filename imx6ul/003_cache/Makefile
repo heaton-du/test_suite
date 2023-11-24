@@ -5,15 +5,19 @@ AR=$(PREFIX)ar
 OBJCOPY=$(PREFIX)objcopy
 OBJDUMP=$(PREFIX)objdump
 
+#$(CC) -nostdlib -g -c -g -mthumb  -march=armv7-a -mcpu=cortex-a7 -o cache_asm.o cache_asm.s
+
 relocate.img : start.S  uart.c main.c my_printf.c
-	$(CC) -nostdlib -g -c -o start.o start.S 
-	$(CC) -nostdlib -g -c -o uart.o uart.c	
-	$(CC) -nostdlib -g -c -o main.o main.c	
+	$(CC) -nostdlib -g -c -o start.o start.S
+	$(CC) -nostdlib -g -c -o uart.o uart.c
+	$(CC) -nostdlib -g -c -o main.o main.c
 	$(CC) -nostdlib -g -c -o my_printf.o my_printf.c
 	$(CC) -nostdlib -g -c -march=armv7-a -o cp15.o cp15.c
-	
-	$(LD) -T imx6ull.lds -g start.o uart.o main.o my_printf.o cp15.o -o relocate.elf -lgcc -L/usr/local/arm/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1
-	
+	$(CC) -nostdlib -g -c -march=armv7-a -o cache.o cache.c
+	$(CC) -nostdlib -g -c -march=armv7-a -o cache_asm.o cache_asm.s
+
+	$(LD) -T imx6ull.lds -g start.o uart.o main.o my_printf.o cp15.o cache.o cache_asm.o -o relocate.elf -lgcc -L/usr/local/arm/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1
+
 	$(OBJCOPY) -O binary -S relocate.elf  relocate.bin
 	$(OBJDUMP) -D -m arm  relocate.elf  > relocate.dis
 	./tools/mkimage -n ./tools/imximage.cfg.cfgtmp -T imximage -e 0x80100000 -d relocate.bin relocate.imx
@@ -30,4 +34,4 @@ debug:
 #直接运行
 qemu:
 	qemu-system-arm -M mcimx6ul-evk -m 128M -s -nographic -kernel relocate.elf
-	
+
