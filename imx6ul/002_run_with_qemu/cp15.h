@@ -41,3 +41,5 @@ void cr_set(unsigned long val);
 unsigned int auxcr_get(void);
 void auxcr_set(unsigned int val);
 int cpuid_get(void);
+unsigned long midr_get(void);
+

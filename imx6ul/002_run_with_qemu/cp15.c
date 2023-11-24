@@ -58,3 +58,14 @@ int cpuid_get(void)
 			);
 	return cpu;
 }
+
+unsigned long midr_get(void)
+{
+	unsigned long t;
+	__asm__ volatile ("mrc p15, 0, %[t], c0, c0, 0"
+			: /* outputs  */ [t] "=r" (t)
+			: /* inputs   */
+			: /* clobbers */ "cc"
+			);
+	return t;
+}
